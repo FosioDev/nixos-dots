@@ -1,4 +1,6 @@
-{ pkgs, config, lib, ... }: {
+{ pkgs, config, lib, ... }: let
+    scale = "2"; # Sway scale и фикс захвата окна в obs на HiDPI
+in {
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -13,6 +15,25 @@
     };
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
+
+  # Fix HiDPI window screensharing blur
+  nixpkgs.overlays = [
+    (final: prev: {
+      sway-unwrapped = prev.sway-unwrapped.overrideAttrs (oldAttrs: {
+        buildInputs = map (pkg:
+          if (pkg.pname or "") == "wlroots" || prev.lib.hasPrefix "wlroots" (pkg.name or "")
+          then pkg.overrideAttrs (old: {
+            postPatch = (old.postPatch or "") + ''
+              substituteInPlace types/ext_image_capture_source_v1/scene.c \
+                --replace-fail 'wlr_output_state_set_custom_mode(&state, extents.width, extents.height, 0);' \
+                               'wlr_output_state_set_custom_mode(&state, ${scale}*extents.width, ${scale}*extents.height, 0); wlr_output_state_set_scale(&state, ${scale});'
+            '';
+          })
+          else pkg
+        ) oldAttrs.buildInputs;
+      });
+    })
+  ];
 
   programs.sway = {
     enable = true;
@@ -51,11 +72,11 @@
       output = {
         "*".bg = "${../themes/media/1.png} fill";
         DP-3 = {
-          scale = "2";
+          scale = scale;
           mode = "3840x2160@160Hz";
         };
         # Virtual-1 = {
-        #   scale = "2";
+        #   scale = scale;
         #   mode = "3840x2160@60Hz";
         # };
       };
