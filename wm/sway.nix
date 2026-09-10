@@ -212,27 +212,192 @@ in {
 
       keybindings = let
         mod = config.hm.wayland.windowManager.sway.config.modifier;
-        satty = ''
-          satty -f - --initial-tool=arrow --copy-command=wl-copy \
-            --actions-on-enter="save-to-clipboard,save-to-file,exit" \
-            --actions-on-escape="save-to-clipboard,save-to-file,exit" \
-            --brush-smooth-history-size=5 --disable-notifications \
-            --output-filename ~/Pictures/Screenshots/satty-$(date '+%Y%m%d-%H%M%S').png
+
+        # Управление громкостью (плюс, минус, мут) (лимит 150%)
+        volumeNotify = pkgs.writeShellScript "volume-notify" ''
+          case "$1" in
+            raise)
+              ${pkgs.wireplumber}/bin/wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+              ;;
+            lower)
+              ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+              ;;
+            mute)
+              ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+              ;;
+          esac
+
+          # Получаем состояние
+          VOL_STATUS=$(${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@)
+          # Преобразуем float (0.65) в проценты (65)
+          VOL=$(echo "$VOL_STATUS" | ${pkgs.gawk}/bin/awk '{print int($2 * 100)}')
+
+          if echo "$VOL_STATUS" | ${pkgs.gnugrep}/bin/grep -q '\[MUTED\]'; then
+            ${pkgs.dunst}/bin/dunstify -r 91190 -t 800 -h int:value:"$VOL" "  Muted ($VOL%)"
+          else
+            ${pkgs.dunst}/bin/dunstify -r 91190 -t 800 -h int:value:"$VOL" "  Volume: $VOL%"
+          fi
         '';
-        focused = "swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | \"\\(.x),\\(.y) \\(.width)x\\(.height)\"'";
+
+        # Управление микрофоном
+        micNotify = pkgs.writeShellScript "mic-notify" ''
+          ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+
+          if ${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | ${pkgs.gnugrep}/bin/grep -q '\[MUTED\]'; then
+            ${pkgs.dunst}/bin/dunstify -r 91191 -t 800 "  Mic Muted"
+          else
+            ${pkgs.dunst}/bin/dunstify -r 91191 -t 800 "  Mic Unmuted"
+          fi
+        '';
+
+        # Управление яркостью
+        brightnessNotify = pkgs.writeShellScript "brightness-notify" ''
+          case "$1" in
+            up)
+              ${pkgs.brightnessctl}/bin/brightnessctl set 5%+
+              ;;
+            down)
+              ${pkgs.brightnessctl}/bin/brightnessctl set 5%-
+              ;;
+          esac
+
+          # Получаем процент яркости
+          BRIGHTNESS=$(${pkgs.brightnessctl}/bin/brightnessctl -m | ${pkgs.gawk}/bin/awk -F, '{gsub(/%/,"",$4); print $4}')
+          ${pkgs.dunst}/bin/dunstify -r 91192 -t 800 -h int:value:"$BRIGHTNESS" "  Brightness: $BRIGHTNESS%"
+        '';
+
+        # Управление медиа
+        mediaNotify = pkgs.writeShellScript "media-notify" ''
+          ACTION="$1"
+          PLAYERCTL="${pkgs.playerctl}/bin/playerctl"
+          DUNSTIFY="${pkgs.dunst}/bin/dunstify"
+
+          # Выполняем команду. Если плееров нет вовсе — выводим сообщение и выходим
+          if ! $PLAYERCTL $ACTION 2>/dev/null; then
+            $DUNSTIFY -r 91193 -t 1000 "  No player active"
+            exit 0
+          fi
+
+          # Микро-пауза, чтобы плеер успел изменить статус и метаданные
+          sleep 0.05
+
+          case "$ACTION" in
+            play-pause)
+              STATUS=$($PLAYERCTL status 2>/dev/null || echo "Unknown")
+              if [ "$STATUS" = "Playing" ]; then
+                ICON=" "
+                TITLE="Playing"
+              else
+                ICON=" "
+                TITLE="Paused"
+              fi
+              ;;
+            next)
+              ICON=" "
+              TITLE="Next Track"
+              ;;
+            previous)
+              ICON=" "
+              TITLE="Previous Track"
+              ;;
+            stop)
+              $DUNSTIFY -r 91193 -t 1500 "  Stopped"
+              exit 0
+              ;;
+          esac
+
+          # Подтягиваем название трека и исполнителя (если плеер их отдает)
+          TRACK=$($PLAYERCTL metadata --format '{{title}}' 2>/dev/null)
+          ARTIST=$($PLAYERCTL metadata --format '{{artist}}' 2>/dev/null)
+
+          if [ -n "$TRACK" ]; then
+            if [ -n "$ARTIST" ]; then
+              $DUNSTIFY -r 91193 -t 2000 "$ICON $TITLE" "$TRACK\n$ARTIST"
+            else
+              $DUNSTIFY -r 91193 -t 2000 "$ICON $TITLE" "$TRACK"
+            fi
+          else
+            $DUNSTIFY -r 91193 -t 1500 "$ICON $TITLE"
+          fi
+        '';
+
+        screenshot = pkgs.writeShellScript "screenshot" ''
+          DIR="$HOME/Pictures/Screenshots"
+
+          TIMESTAMP=$(date '+%Y%m%d-%H%M%S')
+
+          SATTY_CMD=(
+            ${pkgs.satty}/bin/satty
+            -f -
+            --initial-tool=arrow
+            --copy-command="${pkgs.wl-clipboard}/bin/wl-copy"
+            --actions-on-enter="save-to-clipboard,save-to-file,exit"
+            --actions-on-escape="save-to-clipboard,save-to-file,exit"
+            --brush-smooth-history-size=5
+            --disable-notifications
+            --output-filename "$DIR/satty-$TIMESTAMP.png"
+          )
+
+          case "$1" in
+            area)
+              # Заморозка экрана
+              ${pkgs.wayfreeze}/bin/wayfreeze --hide-cursor --after-freeze-cmd "
+                GEOM=\$(${pkgs.slurp}/bin/slurp)
+
+                if [ -n \"\$GEOM\" ]; then
+                  FILE=\"$DIR/screenshot-$TIMESTAMP.png\"
+
+                  # 1. grim забирает именно замороженный кадр
+                  ${pkgs.grim}/bin/grim -g \"\$GEOM\" -t png - | \
+                    ${pkgs.coreutils}/bin/tee \"\$FILE\" | \
+                    ${pkgs.wl-clipboard}/bin/wl-copy
+
+                  # 2. Кадр взят — сразу размораживаем экран
+                  ${pkgs.killall}/bin/killall wayfreeze
+
+                  # 3. Уведомление в фоне
+                  ${pkgs.dunst}/bin/dunstify -r 91194 -t 2000 'Screenshot saved' 'Area copied to clipboard'
+                else
+                  # Если нажали Esc — сразу отпускаем экран, ничего не сохраняя
+                  ${pkgs.killall}/bin/killall wayfreeze
+                fi
+              "
+              ;;
+
+            fullscreen)
+              ${pkgs.grim}/bin/grim -t ppm - | "''${SATTY_CMD[@]}"
+              ;;
+
+            window)
+              GEOM=$(${pkgs.sway}/bin/swaymsg -t get_tree | ${pkgs.jq}/bin/jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')
+              if [ -n "$GEOM" ]; then
+                ${pkgs.grim}/bin/grim -t ppm -g "$GEOM" - | "''${SATTY_CMD[@]}"
+              fi
+              ;;
+          esac
+        '';
       in {
+        # Volume
+        "--locked XF86AudioMute"         = "exec ${volumeNotify} mute";
+        "--locked XF86AudioLowerVolume"  = "exec ${volumeNotify} lower";
+        "--locked XF86AudioRaiseVolume"  = "exec ${volumeNotify} raise";
+        "--locked XF86AudioMicMute"      = "exec ${micNotify}";
+
+        # Media
+        "--locked XF86AudioPlay"  = "exec ${mediaNotify} play-pause";
+        "--locked XF86AudioPause" = "exec ${mediaNotify} play-pause";
+        "--locked XF86AudioPrev"  = "exec ${mediaNotify} previous";
+        "--locked XF86AudioNext"  = "exec ${mediaNotify} next";
+        "--locked XF86AudioStop"  = "exec ${mediaNotify} stop";
+
+        # Brightness
+        "--locked XF86MonBrightnessDown" = "exec ${brightnessNotify} down";
+        "--locked XF86MonBrightnessUp"   = "exec ${brightnessNotify} up";
 
         # Take a screenshot
-        # Area + freeze
-        "Print" = ''
-          exec wayfreeze --hide-cursor --after-freeze-cmd 'grim -g "$(slurp)" -t png - | \
-          tee ~/Pictures/Screenshots/screenshot-$(date '+%Y%m%d-%H%M%S').png | \
-          wl-copy; killall wayfreeze'
-        '';
-        # Fullscreen + crop/draw
-        "Shift+Print" = "exec grim -t ppm - | ${satty}";
-        # Window + crop/draw
-        "Ctrl+Print" = "exec ${focused} | grim -t ppm -g - - | ${satty}";
+        "Print"       = "exec ${screenshot} area";
+        "Shift+Print" = "exec ${screenshot} fullscreen";
+        "Ctrl+Print"  = "exec ${screenshot} window";
 
         # Color picker
         "${mod}+Shift+c" = "exec grim -g \"$(slurp -p)\" -t ppm - | magick - -format '%[hex:u]' info: | wl-copy";
@@ -307,23 +472,6 @@ in {
         "${mod}+Shift+Right" = "resize grow   width  30px";
         "${mod}+Shift+Down"  = "resize grow   height 30px";
         "${mod}+Shift+Up"    = "resize shrink height 30px";
-
-        # Volume
-        "--locked XF86AudioMute"         = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        "--locked XF86AudioLowerVolume"  = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
-        "--locked XF86AudioRaiseVolume"  = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
-        "--locked XF86AudioMicMute"      = "exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-
-        # Media
-        "--locked XF86AudioPlay" = "exec playerctl play-pause";
-        "--locked XF86AudioPause" = "exec playerctl play-pause";
-        "--locked XF86AudioPrev" = "exec playerctl previous";
-        "--locked XF86AudioNext" = "exec playerctl next";
-        "--locked XF86AudioStop" = "exec playerctl stop";
-
-        # Brightness
-        "--locked XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
-        "--locked XF86MonBrightnessUp" = "exec brightnessctl set 5%+";
 
         # Horizontal and vertical splits
         "${mod}+Shift+h" = "splith";
