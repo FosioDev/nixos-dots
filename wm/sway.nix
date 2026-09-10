@@ -16,6 +16,30 @@ in {
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 
+  # Хранилище настроек для GTK и Gnome приложений
+  # Если не работает, то сделай ресет
+  # dconf reset -f /org/gtk/
+  programs.dconf = {
+    enable = true;
+    profiles.user.databases = [
+      {
+        # Нормальная сортировка файлов у GTK File Chooser
+        settings = {
+          "org/gtk/settings/file-chooser" = {
+            sort-directories-first = true;
+            sort-column = "name";
+            sort-order = "ascending";
+          };
+          "org/gtk/gtk4/settings/file-chooser" = {
+            sort-directories-first = true;
+            sort-column = "name";
+            sort-order = "ascending";
+          };
+        };
+      }
+    ];
+  };
+
   # Fix HiDPI window screensharing blur
   nixpkgs.overlays = [
     (final: prev: {
