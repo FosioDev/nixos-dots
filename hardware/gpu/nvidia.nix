@@ -1,5 +1,5 @@
 # https://nixos.wiki/wiki/Nvidia
-# Для архитектуры Blackwell и новее. Старые архитектуры иначе настраивать надо
+# Для архитектуры Blackwell. Старые архитектуры иначе настраивать надо
 { pkgs, config, ... }: {
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];

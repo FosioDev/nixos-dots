@@ -1,5 +1,3 @@
--- Feature-Rich Go Plugin for Neovim
-
 return {
     {
         'ray-x/go.nvim',

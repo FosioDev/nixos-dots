@@ -1,5 +1,3 @@
--- Symbol usage plugin
-
 local SymbolKind = vim.lsp.protocol.SymbolKind
 
 local function h(name)

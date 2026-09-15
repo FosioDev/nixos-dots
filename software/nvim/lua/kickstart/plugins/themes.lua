@@ -1,7 +1,3 @@
--- You can easily change to a different colorscheme.
--- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-
--- Cмена тем тут сделана уёбищно
 -- Чтоб сменить стандартную тему, надо раскомментировать vim.cmd.colorscheme под именем темы
 -- и закомментировать это же у прошлой темы
 
@@ -11,22 +7,6 @@
 -- чтобы корректно применить стили.
 
 -- https://dotfyle.com/neovim/colorscheme/top
-
--- Убедитесь, что Sonokai установлен через lazy.nvim или другой менеджер
-local variants = { 'default', 'atlantis', 'andromeda', 'shusia', 'maia', 'espresso' }
-
--- Создаем псевдонимы для каждой темы
-for _, variant in ipairs(variants) do
-    local alias = 'sonokai-' .. variant
-    vim.api.nvim_create_user_command('Colorscheme' .. variant, function()
-        vim.g.sonokai_style = variant
-        vim.cmd 'colorscheme sonokai'
-    end, {})
-
-    -- Регистрируем в Neovim как отдельный colorscheme
-    vim.api.nvim_set_hl(0, alias, {})
-    vim.cmd(string.format("autocmd ColorSchemePre %s let g:sonokai_style = '%s' | colorscheme sonokai", alias, variant))
-end
 
 return {
     {
@@ -48,10 +28,6 @@ return {
         end,
     },
 
-    ----------------------------------------------------------
-    -- Гандоны не дают выбрать тему нормально               --
-    -- Приходится конфиг переписывать ради выбора расцветок --
-    ----------------------------------------------------------
     {
         'ellisonleao/gruvbox.nvim',
         priority = 1000,

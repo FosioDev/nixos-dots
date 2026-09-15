@@ -16,25 +16,7 @@
     ];
   };
 
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-serif
-    noto-fonts-cjk-sans
-    noto-fonts-color-emoji
-    noto-fonts-monochrome-emoji
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.noto
-    nerd-fonts.caskaydia-mono
-    carlito
-    terminus_font
-    inconsolata
-    font-awesome
-    liberation_ttf
-    dejavu_fonts
-    cantarell-fonts
-    unifont
-    unifont_upper
-  ];
+  boot.kernelPackages = pkgs.linuxPackages_latest; # Ласт ядро линуха
 
   boot.loader = {
     grub = {
@@ -208,7 +190,6 @@
     ##########
 
     # Минималистичный агент для программирования
-    # В nix-ld поместить нужную версию pi.openssl нельзя, тк там старые версии либ, которые с ним конфликтуют
     # (stdenv.mkDerivation {
     #   name = "pi-fixed";
     #   nativeBuildInputs = [ patchelf makeWrapper ];
@@ -283,6 +264,7 @@
     # spkgs.hugo # Надо 24.11 или 24.05 для моего блога
     yaml-language-server
     taplo
+    rust-analyzer
 
     python3
     # python3Packages.pip
@@ -465,5 +447,25 @@
     vrrtest # Тест на тиринг. Поставил 161 фпс на 160 герц монике и увидел прикол
     vulkan-tools
     libsecret
+  ];
+
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-serif
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
+    noto-fonts-monochrome-emoji
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.noto
+    nerd-fonts.caskaydia-mono
+    carlito
+    terminus_font
+    inconsolata
+    font-awesome
+    liberation_ttf
+    dejavu_fonts
+    cantarell-fonts
+    unifont
+    unifont_upper
   ];
 }

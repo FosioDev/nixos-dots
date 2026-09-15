@@ -1,5 +1,3 @@
--- Adding history for nvim clipboard
-
 return {
     {
         'AckslD/nvim-neoclip.lua',

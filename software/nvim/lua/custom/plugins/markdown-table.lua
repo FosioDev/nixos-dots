@@ -1,5 +1,5 @@
 -- Run the :Mtm command to toggle markdown table mode.
---
+
 return {
     {
         'Kicamon/markdown-table-mode.nvim',

@@ -58,7 +58,6 @@ return {
                 'python',
                 'rust',
                 'sql',
-                'templ',
                 'toml',
                 'yaml',
                 'cmake',

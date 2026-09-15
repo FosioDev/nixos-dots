@@ -52,7 +52,6 @@
       #   name = "NotoSans Nerd Font";
       # };
 
-      # Ширина символов одинаковая
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMonoNL Nerd Font Mono";
@@ -62,14 +61,6 @@
         package = pkgs.noto-fonts-color-emoji;
         name = "Noto Color Emoji";
       };
-
-      sizes = {
-      #   applications = 12;
-      #   terminal = 15;
-      #   desktop = 10;
-      #   popups = config.stylix.fonts.sizes.desktop;
-      };
-
     };
   };
 

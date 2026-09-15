@@ -36,8 +36,6 @@
     extraGroups = [ "networkmanager" "wheel" "input" "libvirtd" "storage" "docker" "video" "render" ];
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest; # Ласт ядро линуха
-
   hm.programs.home-manager.enable = true;
   hm.home = {
     username = username;

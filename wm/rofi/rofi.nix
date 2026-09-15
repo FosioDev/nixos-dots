@@ -1,14 +1,5 @@
-# Много готовых дизайнов для rofi https://github.com/adi1090x/rofi
-# Там разделены launchers и applets. Я не сразу понял в чём разница
-# Launchers просто запускает приложение и ничего больше
-# Applets это кнопка, которой задаёшь своё имя и скрипт, который будет выполнен при нажатии
-# Через applets можно запускать скрипты, проги от рута или отображать информацию по типу заряда акума
-# Описание и генератор стилей https://comfoxx.github.io/rofi-old-generator/old.html
-# Полезная инфа https://wiki.archlinux.org/title/Rofi
-# Готовые скрипты https://github.com/davatorium/rofi/wiki/User-scripts
-
 { pkgs, config, ... }: {
-  environment.systemPackages = with pkgs; [ libqalculate ]; # Калькулятор для rofi
+  environment.systemPackages = with pkgs; [ libqalculate ];
 
   hm.programs.rofi = {
     enable = true;

@@ -49,11 +49,6 @@
       modules = [
         ./configuration.nix
 
-        # Своя версия для параметра `programs.throne`
-        # Сначала выключить ориг версию, потом импортировать отдельную
-        # { disabledModules = [ "programs/throne.nix" ]; }
-        # "${inputs.throne}/nixos/modules/programs/throne.nix"
-
         inputs.home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;

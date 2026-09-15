@@ -15,6 +15,7 @@ in {
 
   hm.xdg.configFile = { # Это для каталога .config
     "qobuz-dl".source = config.hm.lib.file.mkOutOfStoreSymlink "/mnt/${dir}/Media/Music/Qobuz/.config/qobuz-dl";
+    "gallery-dl/config.json".source = config.hm.lib.file.mkOutOfStoreSymlink "/mnt/${dir}/Backups/Apps/gallery-dl.json";
     "chromium".source = config.hm.lib.file.mkOutOfStoreSymlink "/mnt/${dir}/Backups/Apps/chromium";
     "mozilla".source = config.hm.lib.file.mkOutOfStoreSymlink "/mnt/${dir}/Backups/Apps/.mozilla";
     "librewolf/librewolf".source = config.hm.lib.file.mkOutOfStoreSymlink "/mnt/${dir}/Backups/Apps/.librewolf";

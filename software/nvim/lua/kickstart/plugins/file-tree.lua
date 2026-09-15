@@ -1,7 +1,3 @@
--- Neo-tree is a Neovim plugin to browse the file system
--- Не умеет работать со сессиями
--- https://github.com/nvim-neo-tree/neo-tree.nvim
-
 return {
     {
         'nvim-neo-tree/neo-tree.nvim',

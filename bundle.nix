@@ -4,19 +4,19 @@
     ./packages.nix
     # ./inputs.nix
 
-    # WARN: Удали каталоги браузеров перед созданием симлинка
-    # И замаунти диски нужные
-    # ./symlinks.nix
-
     ./hardware/gpu/amd.nix
     # ./hardware/gpu/intel.nix
     # ./hardware/gpu/nvidia.nix
+
+    # WARN: Удали каталоги браузеров перед созданием симлинка
+    # И замаунти диски нужные
+    # ./symlinks.nix
 
     # ./hardware/filesystems.nix
     # ./hardware/hibernate.nix
     ./hardware/virtualisation.nix
     ./hardware/network.nix
-    ./hardware/sound/sound.nix
+    ./hardware/sound.nix
     # ./hardware/vr.nix
 
     ./software/mpv/mpv.nix

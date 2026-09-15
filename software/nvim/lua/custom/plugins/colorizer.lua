@@ -1,5 +1,3 @@
--- A high-performance color highlighter
-
 return {
     {
         'catgoose/nvim-colorizer.lua',

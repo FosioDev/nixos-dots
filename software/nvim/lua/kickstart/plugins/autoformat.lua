@@ -1,6 +1,3 @@
--- Autoformat
--- Timeout для форматирования пришлось задать в 5 секунд, потому что sqlfluff очень долго форматирует
-
 return {
     {
         'stevearc/conform.nvim',
@@ -13,6 +10,7 @@ return {
                     require('conform').format {
                         async = true,
                         lsp_format = 'fallback',
+                        -- Чтоб наверняка
                         timeout_ms = 5000,
                     }
                 end,

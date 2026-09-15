@@ -1,5 +1,3 @@
--- Autocompletion
-
 return {
     {
         'saghen/blink.cmp',

@@ -1,5 +1,3 @@
--- LSP Plugins
-
 return {
     {
         -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -204,15 +202,16 @@ return {
             --  - settings (table): Override the default settings passed when initializing the server.
             --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
             local servers =
-                { -- WARN: Качает через mason. Может не работать в NixOS. Оставил для других OS на будущее
-                    -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
-                    --
-                    -- Some languages (like typescript) have entire language plugins that can be useful:
-                    --    https://github.com/pmizio/typescript-tools.nvim
-                    --
-                    -- But for many setups, the LSP (`ts_ls`) will work just fine
-                    -- taplo
-                }
+            -- WARN: Качает через mason. Может не работать на NixOS. Оставил для других OS на будущее
+            {
+              -- See `:help lspconfig-all` for a list of all the pre-configured LSPs
+              --
+              -- Some languages (like typescript) have entire language plugins that can be useful:
+              --    https://github.com/pmizio/typescript-tools.nvim
+              --
+              -- But for many setups, the LSP (`ts_ls`) will work just fine
+              -- taplo
+            }
 
             -- local util = require 'lspconfig.util'
             local lspconfig = require 'lspconfig'
@@ -267,6 +266,9 @@ return {
 
             -- Lua
             lspconfig.lua_ls.setup {
+                on_attach = function(client, bufnr) -- Выключить форматирование
+                    client.server_capabilities.documentFormattingProvider = false
+                end,
                 settings = {
                     Lua = {
                         completion = {
@@ -293,7 +295,7 @@ return {
             -- }
 
             -- Rust
-            -- lspconfig.rust_analyzer.setup {}
+            lspconfig.rust_analyzer.setup {}
 
             -- Bash
             lspconfig.bashls.setup {

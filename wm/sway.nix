@@ -107,6 +107,8 @@ in {
 
       input = {
         "type:pointer" = {
+          # Превратить движение мыши в скрол,
+          # когда зажата дальняя боковая кнопка мыши
           accel_profile = "flat";
           scroll_method = "on_button_down";
           scroll_button = "276"; # sudo libinput debug-events --show-keycodes
@@ -189,6 +191,16 @@ in {
             command = "floating enable, border pixel 1";
             criteria.app_id = "thunar";
             criteria.title = "Rename.*";
+          }
+          {
+            command = "floating enable, border pixel 1";
+            criteria.app_id = "thunar";
+            criteria.title = "Confirm to replace files";
+          }
+          {
+            command = "floating enable, border pixel 1";
+            criteria.app_id = "thunar";
+            criteria.title = "File Operation Progress";
           }
           {
             command = "floating enable, border pixel 1";
@@ -356,7 +368,7 @@ in {
                   ${pkgs.killall}/bin/killall wayfreeze
 
                   # 3. Уведомление в фоне
-                  ${pkgs.dunst}/bin/dunstify -r 91194 -t 2000 'Screenshot saved' 'Area copied to clipboard'
+                  # ${pkgs.dunst}/bin/dunstify -r 91194 -t 2000 'Screenshot saved' 'Area copied to clipboard'
                 else
                   # Если нажали Esc — сразу отпускаем экран, ничего не сохраняя
                   ${pkgs.killall}/bin/killall wayfreeze
