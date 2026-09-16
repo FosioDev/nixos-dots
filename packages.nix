@@ -320,11 +320,11 @@
     f2fs-tools exfat lm_sensors
     pwgen jq ffmpeg_7 imagemagick
     gnugrep rsync fastfetch bat
-    btop fzf killall libxml2
+    fzf killall libxml2 brightnessctl
     miller svt-av1 gawk tokei
     gitui fclones zellij timer
     inetutils playerctl libnotify
-    brightnessctl
+    btop-rocm btop-cuda
     pkgs2.yt-dlp
     pkgs2.gallery-dl
 
