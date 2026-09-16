@@ -16,7 +16,8 @@
     ];
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest; # Ласт ядро линуха
+  # boot.kernelPackages = pkgs.linuxPackages_latest; # Ласт ядро линуха (было 7.2.3)
+  boot.kernelPackages = pkgs.linuxPackages; # Ласт LTS ядро линуха
 
   boot.loader = {
     grub = {
