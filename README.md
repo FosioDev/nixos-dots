@@ -32,6 +32,8 @@ sudo nixos-rebuild switch
 
 ## Конфиг
 
+При установке конфига будет происходить компиляция `wlroots` и `waybar`. Это может занять какое-то время. На моём пк это 1-5 минут.
+
 ```sh
 git clone https://github.com/fosiodev/nixos-dots
 cd nixos-dots

@@ -1,7 +1,8 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, inputs, ... }: {
 
   hm.programs.waybar = {
     enable = true;
+    package = inputs.waybar.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     settings = {
       mainBar = {

@@ -26,6 +26,7 @@
     # Лок конкретного софта
     strawberry.url = "github:nixos/nixpkgs/nixos-26.05";
     throne.url = "github:nixos/nixpkgs/nixos-26.05";
+    waybar.url = "github:Alexays/Waybar";
 
     # Внешние flake inputs
     home-manager = {
