@@ -4,13 +4,19 @@
 # и лишь после этого читает бинарный кеш.
 # То есть он начнёт компилировать эти пакеты вместо скачивания.
 # Чтоб это исправить, надо сначала закомментировать импорт этого файла,
-# сделать ребилд, чтоб активировать бинарны кеш из packages.nix
+# сделать ребилд, чтоб активировать бинарны кеш из packages.nix,
 # и только после этого делать ребилд с импортом этого файла, чтоб скачать пакеты.
 
+# Если добавлять бинарный кеш в файле flake.nix вместо других, то проблемы выше не будет.
+# Сначала активируется кеш и только потом будет скачивание софта.
+# Но тогда бинарный кеш не будет работать с nix-shell. Он активен лишь на этот flake проект.
+# Если хочешь везде бинарный кеш, то добавляй и в packages.nix, и во flake.nix.
+
 { pkgs, inputs, ... }: {
+  # nixpkgs.overlays = [ inputs.affinity-nix.overlays.default ];
   environment.systemPackages = [
     inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-stable
     inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
-    inputs.affinity-nix.packages.${pkgs.system}.v3 # Бесплатная замена photoshop через wine
+    # pkgs.affinity-v3 # Бесплатная замена photoshop через wine
   ];
 }

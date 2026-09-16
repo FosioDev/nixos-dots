@@ -1,6 +1,22 @@
 {
   description = "Main flake file";
 
+  # Кеш, чтоб не компилить некоторый софт
+  # Сам софт будет в inputs.nix
+  nixConfig = {
+    extra-substituters = [
+      "https://cache.forall.systems"
+      "https://nix-gaming.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      # https://github.com/mrshmllow/affinity-nix
+      "cache.forall.systems:5PmD7QO4MSF8YgyRZtkSGXRDo96H3bybIf2SsQh8ScI="
+
+      # https://github.com/fufexan/nix-gaming
+      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs2.url = "github:nixos/nixpkgs/nixos-unstable";

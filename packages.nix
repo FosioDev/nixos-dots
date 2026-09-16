@@ -1,20 +1,4 @@
-{ pkgs, pkgs2, spkgs, pkgsld, strawberry, inputs, ... }: {
-
-  # Кеш, чтоб не компилить некоторый софт
-  # Сам софт будет в inputs.nix
-  nix.settings = {
-    substituters = [
-      "https://cache.forall.systems"
-      "https://nix-gaming.cachix.org"
-    ];
-    trusted-public-keys = [
-      # https://github.com/mrshmllow/affinity-nix
-      "cache.forall.systems:5PmD7QO4MSF8YgyRZtkSGXRDo96H3bybIf2SsQh8ScI="
-
-      # https://github.com/fufexan/nix-gaming
-      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-    ];
-  };
+{ pkgs, pkgs2, spkgs, pkgsld, strawberry, ... }: {
 
   # boot.kernelPackages = pkgs.linuxPackages_latest; # Ласт ядро линуха (было 7.2.3)
   boot.kernelPackages = pkgs.linuxPackages; # Ласт LTS ядро линуха
