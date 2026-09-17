@@ -17,7 +17,7 @@
     ./hardware/virtualisation.nix
     ./hardware/network.nix
     ./hardware/sound.nix
-    # ./hardware/vr.nix
+    # ./hardware/vr/vr.nix
 
     ./software/mpv/mpv.nix
     ./software/ranger/ranger.nix

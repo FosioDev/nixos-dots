@@ -350,8 +350,6 @@
 
     # lutris # Запускать .exe игры. Не всё через `wine game.exe` работает на nixos нормально
     # heroic
-    # sidequest # Ставить APK файлы на Oculus Quest 2
-    # bs-manager # Удобно ставить моды и менять версии Beat Saber
     prismlauncher
 
     pkgs2.protonup-qt
