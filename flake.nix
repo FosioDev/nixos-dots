@@ -39,6 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    uniclip = {
+      url = "github:yurinek0/uniclip-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     affinity-nix.url = "github:mrshmllow/affinity-nix";
     nix-gaming.url = "github:fufexan/nix-gaming";
   };

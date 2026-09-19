@@ -15,6 +15,7 @@
     # ./hardware/filesystems.nix
     # ./hardware/hibernate.nix
     ./hardware/virtualisation.nix
+    # ./hardware/qemu-guest.nix
     ./hardware/network.nix
     ./hardware/sound.nix
     # ./hardware/vr/vr.nix

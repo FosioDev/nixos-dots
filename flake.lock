@@ -624,6 +624,7 @@
         "strawberry": "strawberry",
         "stylix": "stylix",
         "throne": "throne",
+        "uniclip": "uniclip",
         "waybar": "waybar"
       }
     },
@@ -787,6 +788,26 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "uniclip": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1768819315,
+        "narHash": "sha256-MFvr6A6yUJ7F23uNPOnIG758gWV2Ka76LTFf51UhZl4=",
+        "owner": "yurinek0",
+        "repo": "uniclip-rs",
+        "rev": "c950bb9186f9effca7d72155a0affed59c0411b7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yurinek0",
+        "repo": "uniclip-rs",
         "type": "github"
       }
     },
