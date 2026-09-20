@@ -44,6 +44,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    sway-layout-sync = {
+      url = "github:fosiodev/sway-layout-sync";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     affinity-nix.url = "github:mrshmllow/affinity-nix";
     nix-gaming.url = "github:fufexan/nix-gaming";
   };

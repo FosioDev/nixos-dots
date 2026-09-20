@@ -623,6 +623,7 @@
         "nixpkgsld": "nixpkgsld",
         "strawberry": "strawberry",
         "stylix": "stylix",
+        "sway-layout-sync": "sway-layout-sync",
         "throne": "throne",
         "uniclip": "uniclip",
         "waybar": "waybar"
@@ -675,6 +676,26 @@
         "owner": "nix-community",
         "ref": "release-26.05",
         "repo": "stylix",
+        "type": "github"
+      }
+    },
+    "sway-layout-sync": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789890254,
+        "narHash": "sha256-3FXIx8ZBnlGlWESJKJDaerrBnQmigocqBlEIiCnvGRc=",
+        "owner": "fosiodev",
+        "repo": "sway-layout-sync",
+        "rev": "60f37b01211cec4b4cc762f5381fddc355feacdd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fosiodev",
+        "repo": "sway-layout-sync",
         "type": "github"
       }
     },

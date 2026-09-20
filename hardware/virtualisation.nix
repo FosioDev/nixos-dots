@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }: {
   environment.systemPackages = [
     inputs.uniclip.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.sway-layout-sync.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   virtualisation = {
