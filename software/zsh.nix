@@ -38,8 +38,6 @@
       # Garbage collector. Удалить все не используемые пакеты (например после обновы)
       grb = "sudo nix-collect-garbage -d";
 
-      pkgs = "nvim ${flakeDir}/nixos/packages.nix";
-
       vim = "nvim";
       vi = "nvim";
       v = "nvim";

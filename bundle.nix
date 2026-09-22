@@ -25,6 +25,7 @@
     ./software/starship/starship.nix
     ./software/mangohud.nix
     ./software/zsh.nix
+    # ./software/pi.nix
 
     ./themes/themes.nix
 

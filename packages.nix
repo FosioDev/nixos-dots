@@ -113,18 +113,20 @@
     alacritty = {
       enable = true;
       settings.window.padding = { x = 5; y = 5; };
+      # shift enter переносы в pi
+      settings.keyboard.bindings = [{
+        chars = "\n";
+        key = "Return";
+        mods = "Shift";
+      }];
     };
     kitty = { # Кривой ssh, но быстрый протокол рендера видео
       enable = true;
-
       shellIntegration = {
         enableBashIntegration = true;
         enableZshIntegration = true;
       };
-
-      settings = {
-        window_padding_width = 5;
-      };
+      settings.window_padding_width = 5;
     };
   };
   services.tumbler.enable = true; # XFCE Thumbnails
@@ -157,6 +159,7 @@
     wl-clipboard
     cliphist
     wtype
+    ydotool
     pass-wayland
     wlr-randr
     wlprop
@@ -173,66 +176,6 @@
     ##########
     ## Code ##
     ##########
-
-    # Минималистичный агент для программирования
-    # (stdenv.mkDerivation {
-    #   name = "pi-fixed";
-    #   nativeBuildInputs = [ patchelf makeWrapper ];
-    #   unpackPhase = "true";
-    #   installPhase = ''
-    #     mkdir -p $out/bin
-    #
-    #     # Создаем пропатченную ноду
-    #     cp ${pkgs.nodejs}/bin/node $out/bin/.pi-node-wrapped
-    #     chmod +w $out/bin/.pi-node-wrapped
-    #
-    #     old_rpath=$(patchelf --print-rpath $out/bin/.pi-node-wrapped)
-    #     new_libs="${pkgs.openssl.out}/lib:${pkgs.stdenv.cc.cc}/lib"
-    #     new_rpath="$new_libs:$old_rpath"
-    #
-    #     interpreter=$(cat ${pkgs.stdenv.cc}/nix-support/dynamic-linker)
-    #
-    #     patchelf --set-interpreter "$interpreter" \
-    #              --set-rpath "$new_rpath" \
-    #              --force-rpath \
-    #              $out/bin/.pi-node-wrapped
-    #
-    #     # Копируем оригиналиный shell-скрипт pi
-    #     cp ${pkgs.pi-coding-agent}/bin/pi $out/bin/.pi-script-raw
-    #     chmod +w $out/bin/.pi-script-raw
-    #
-    #     # Подменяем путь к ноде внутри этого скрипта
-    #     # Мы ищем оригинальную ноду и меняем её на нашу пропатченную
-    #     sed -i "s|${pkgs.nodejs}/bin/node|$out/bin/.pi-node-wrapped|g" $out/bin/.pi-script-raw
-    #
-    #     # Создаем финальную обертку, которая чистит переменные nix-ld и запускает наш измененный скрипт
-    #     makeWrapper $out/bin/.pi-script-raw $out/bin/pi \
-    #       --unset LD_LIBRARY_PATH \
-    #       --unset NIX_LD_LIBRARY_PATH \
-    #       --unset NIX_LD \
-    #       --set PI_OFFLINE 1 # Отключает телеметрию, проверку пакетов и обновлений в pi
-    #   '';
-    # })
-
-    # Инструмент для работы с контекстом кода CodeMapper https://github.com/elpapi42/codemapper-fork
-    # (pkgs.rustPlatform.buildRustPackage {
-    #   pname = "codemapper";
-    #   version = "unstable-2026";
-    #
-    #   src = fetchFromGitHub {
-    #     owner = "elpapi42";
-    #     repo = "codemapper-fork";
-    #     rev = "main"; # Или конкретный коммит, если нужна фиксация версии
-    #
-    #     hash = "sha256-rNnrJOxgC51vi1CQ+z2hrnklBn7q4mVISq3oZ1/ebYk=";
-    #   };
-    #
-    #   # Отключаем тесты, так как тест 'test_is_git_repo' требует папки .git,
-    #   # которая отсутствует в изолированной среде сборки Nix.
-    #   doCheck = false;
-    #
-    #   cargoHash = "sha256-LrvLmRto9NhGrGRepV7UOFcqce2+i86MNIQ5agB9mYg=";
-    # })
 
     vscode-fhs
     spkgs.neovim
