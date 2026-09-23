@@ -7,7 +7,7 @@
   # Выключить смену языка биндом на виртуалке
   # Нажатие Caps Lock ничего не делает, Shift + Caps Lock включает реальный Caps Lock
   # Если надо менять язык на виртуалке обычным способом, то закомментируй эту настройку
-  hm.wayland.windowManager.sway.config.input."type:keyboard".xkb_options = lib.mkForce "caps:shift_caps_cancel";
+  hm.wayland.windowManager.sway.config.input."type:keyboard".xkb_options = lib.mkForce "caps:none";
 
   services = {
     openssh.enable = true;

@@ -32,7 +32,7 @@ sudo nixos-rebuild switch
 
 ## Конфиг
 
-При установке конфига будет происходить компиляция [sway-layout-sync](https://github.com/fosiodev/sway-layout-sync), [uniclip-rs](https://github.com/YuriNek0/uniclip-rs), [waybar](github.com/Alexays/Waybar) и [wlroots](https://gitlab.freedesktop.org/wlroots/wlroots). Это может занять какое-то время. На моём пк это 1-5 минут.
+При установке конфига будет происходить компиляция [sway-layout-sync](https://github.com/fosiodev/sway-layout-sync), [uniclip-rs](https://github.com/YuriNek0/uniclip-rs), [waybar](https://github.com/Alexays/Waybar) и [wlroots](https://gitlab.freedesktop.org/wlroots/wlroots). Это может занять какое-то время. На моём пк это 1-5 минут.
 
 ```sh
 git clone https://github.com/fosiodev/nixos-dots

@@ -46,38 +46,38 @@
       libraries = with pkgsld; [
         stdenv.cc.cc
         # For Throne 1.2.1
-        kdePackages.qtbase
-        kdePackages.qttools
-        kdePackages.qtwayland
-        kdePackages.qtsvg
-        kdePackages.qtimageformats
-        util-linux
-        zlib
-        zstd
-        mesa
-        libGL
-        libglvnd
-        libxkbcommon
-        freetype
-        fontconfig
-        libx11
-        libxext
-        libxrandr
-        libxrender
-        libxcursor
-        libxxf86vm
-        libxi
-        libxcb
-        libxfixes
-        libxcb-util
-        libxcb-keysyms
-        libxcb-wm
-        libxcb-image
-        libxcb-render-util
-        xcb-util-cursor
-        glib
-        dbus
-        krb5
+        # kdePackages.qtbase
+        # kdePackages.qttools
+        # kdePackages.qtwayland
+        # kdePackages.qtsvg
+        # kdePackages.qtimageformats
+        # util-linux
+        # zlib
+        # zstd
+        # mesa
+        # libGL
+        # libglvnd
+        # libxkbcommon
+        # freetype
+        # fontconfig
+        # libx11
+        # libxext
+        # libxrandr
+        # libxrender
+        # libxcursor
+        # libxxf86vm
+        # libxi
+        # libxcb
+        # libxfixes
+        # libxcb-util
+        # libxcb-keysyms
+        # libxcb-wm
+        # libxcb-image
+        # libxcb-render-util
+        # xcb-util-cursor
+        # glib
+        # dbus
+        # krb5
       ];
     };
 
@@ -186,10 +186,8 @@
     clang-tools
     clang
     gcc
-    glibc
     nixd
     gnumake
-    # spkgs.hugo # Надо 24.11 или 24.05 для моего блога
     yaml-language-server
     taplo
     rust-analyzer
@@ -291,7 +289,7 @@
     ## Games ##
     ###########
 
-    # lutris # Запускать .exe игры. Не всё через `wine game.exe` работает на nixos нормально
+    # lutris # Не всё через `wine game.exe` работает на nixos нормально
     # heroic
     prismlauncher
 
@@ -347,7 +345,6 @@
     # eloquent # GUI для LanguageTool
     obsidian
     anki
-    pomodoro-gtk
     spkgs.planify
 
 
@@ -370,7 +367,6 @@
 
     qmk vial
     # gucharmap # Проверка шрифтов. Какой шрифт какие символы отображает
-    vrrtest # Тест на тиринг. Поставил 161 фпс на 160 герц монике и увидел прикол
     vulkan-tools
     libsecret
   ];

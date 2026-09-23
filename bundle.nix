@@ -18,12 +18,12 @@
     # ./hardware/qemu-guest.nix
     ./hardware/network.nix
     ./hardware/sound.nix
-    # ./hardware/vr/vr.nix
+    # ./hardware/vr.nix
 
     ./software/mpv/mpv.nix
     ./software/ranger/ranger.nix
-    ./software/starship/starship.nix
-    ./software/mangohud.nix
+    ./software/starship.nix
+    # ./software/mangohud.nix
     ./software/zsh.nix
     # ./software/pi.nix
 
