@@ -18,9 +18,31 @@
 
     plugins = with pkgs; [
       rofi-calc # https://github.com/svenstaro/rofi-calc
-      rofi-power-menu # https://github.com/jluttine/rofi-power-menu
     ];
   };
+
+  # Power Menu zsh script
+  # '' для экранирования $ в многострочной строке
+  nixpkgs.overlays = [
+    (final: prev: {
+      rofi-power-menu = prev.writeScriptBin "rofi-power-menu" ''
+        #!/usr/bin/env zsh
+        set -euo pipefail
+
+        opts=(' Lock' '󰐥 Poweroff' '󰑓 Reboot' '󰤄 Suspend' '󰆓 Hibernate' '󰍃 Logout')
+        actions=(
+            'loginctl lock-session' 'systemctl poweroff' 'systemctl reboot'
+            'systemctl suspend' 'systemctl hibernate' 'swaymsg exit'
+        )
+
+        index=$(printf '%s\n' "''${opts[@]}" | rofi -dmenu -p "Power Menu" -format i -theme ~/.config/rofi/power.rasi)
+        [[ -n "$index" ]] || exit 0
+
+        action=''${actions[$((index + 1))]}
+        exec ''${=action}
+      '';
+    })
+  ];
 
   hm.xdg.configFile = {
     "rofi/launcher.rasi".source = ./launcher.rasi;

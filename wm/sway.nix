@@ -441,7 +441,7 @@ in {
         "${mod}+Ctrl+v" = "exec cliphist list | rofi -dmenu -p \"Delete\" -theme-str 'window { padding: 5px; border: 1px; }' | cliphist delete";
 
         # Power menu
-        "${mod}+BackSpace" = "exec rofi -show powermenu -modi powermenu:${pkgs.rofi-power-menu}/bin/rofi-power-menu -theme ~/.config/rofi/power.rasi";
+        "${mod}+BackSpace" = "exec ${pkgs.rofi-power-menu}/bin/rofi-power-menu";
 
         # Switch to workspace
         "${mod}+1" = "workspace number 1";

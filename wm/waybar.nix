@@ -36,7 +36,7 @@
 
         "custom/power" = {
           format = "";
-          on-click = "rofi -show powermenu -modi powermenu:${pkgs.rofi-power-menu}/bin/rofi-power-menu -theme ~/.config/rofi/power.rasi";
+          on-click = "${pkgs.rofi-power-menu}/bin/rofi-power-menu";
           tooltip = false;
         };
 
