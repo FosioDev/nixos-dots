@@ -1,4 +1,4 @@
-{ pkgs, pkgs2, spkgs, pkgsld, strawberry, ... }: {
+{ pkgs, pkgs2, spkgs, pkgsld, strawberry, mpv-ffmpeg, ... }: {
 
   # boot.kernelPackages = pkgs.linuxPackages_latest; # Ласт ядро линуха (было 7.2.3)
   boot.kernelPackages = pkgs.linuxPackages; # Ласт LTS ядро линуха
@@ -243,7 +243,7 @@
     openssl wget curl git tree
     xdg-utils usbutils exiftool
     f2fs-tools exfat lm_sensors
-    pwgen jq ffmpeg_7 imagemagick
+    pwgen jq imagemagick
     gnugrep rsync fastfetch bat
     fzf killall libxml2 brightnessctl
     miller svt-av1 gawk tokei
@@ -252,6 +252,7 @@
     btop-rocm btop-cuda
     pkgs2.yt-dlp
     pkgs2.gallery-dl
+    mpv-ffmpeg.ffmpeg
 
     android-tools
     scrcpy # Стримить мобилу/камеру на пк по usb

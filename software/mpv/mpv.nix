@@ -1,5 +1,5 @@
-{ pkgs, config, ... }: {
-  environment.systemPackages = with pkgs; [ mpv ];
+{ mpv-ffmpeg, config, ... }: {
+  environment.systemPackages = with mpv-ffmpeg; [ mpv ];
 
   hm.xdg.configFile = {
     "mpv/mpv.conf".source = ./mpv.conf;
