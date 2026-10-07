@@ -46,9 +46,10 @@
       VISUAL = "nvim";
       BROWSER = "librewolf";
       TERMINAL = "alacritty";
-      TERM = "alacritty";
-      PATH = "$PATH:/home/${username}/go/bin";
     };
+    sessionPath = [
+      "$HOME/go/bin"
+    ];
 
     stateVersion = state; # Don't change it
   };
