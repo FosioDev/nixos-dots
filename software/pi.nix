@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
-  environment.systemPackages = with pkgs; let
+{ pi, ... }: {
+  environment.systemPackages = with pi; let
     # Библиотеки рантайма
     runtimeLibs = lib.makeLibraryPath [
       openssl

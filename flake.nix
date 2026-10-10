@@ -28,6 +28,7 @@
     throne.url = "github:nixos/nixpkgs/nixos-26.05";
     waybar.url = "github:Alexays/Waybar";
     mpv-ffmpeg.url = "github:nixos/nixpkgs/nixos-unstable";
+    pi.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Внешние flake inputs
     home-manager = {
@@ -67,9 +68,10 @@
     strawberry = import inputs.strawberry { inherit system config; };
     throne = import inputs.throne { inherit system config; };
     mpv-ffmpeg = import inputs.mpv-ffmpeg { inherit system config; };
+    pi = import inputs.pi { inherit system config; };
 
     commonArgs = {
-      inherit username state spkgs pkgs2 pkgsld strawberry throne mpv-ffmpeg inputs;
+      inherit username state spkgs pkgs2 pkgsld strawberry throne mpv-ffmpeg pi inputs;
     };
   in {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {

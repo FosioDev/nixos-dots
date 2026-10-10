@@ -611,6 +611,22 @@
         "type": "github"
       }
     },
+    "pi": {
+      "locked": {
+        "lastModified": 1791456040,
+        "narHash": "sha256-H83yz/do+hjOO0uujHyH8RgtIQP2v7Mw+cLwcZK/xKc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e7439b6b14ad3cc35d05608ebca9bce01a25f5f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "plugin-loader-src": {
       "flake": false,
       "locked": {
@@ -638,6 +654,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs2": "nixpkgs2",
         "nixpkgsld": "nixpkgsld",
+        "pi": "pi",
         "strawberry": "strawberry",
         "stylix": "stylix",
         "sway-layout-sync": "sway-layout-sync",
