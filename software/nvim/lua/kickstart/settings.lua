@@ -64,7 +64,7 @@ vim.o.mouse = 'a'
 vim.o.showmode = false
 
 -- greatest remap ever
-vim.keymap.set('x', '<leader>p', '"_dP', { desc = '[P]aste' })
+vim.keymap.set('x', '<leader>p', '"_dP', { desc = '[P]aste without yank' })
 
 -- Не вырезать табы при пасте в терминальные окна (по умолчанию HT в фильтре)
 vim.o.termpastefilter = 'BS,ESC,DEL'
