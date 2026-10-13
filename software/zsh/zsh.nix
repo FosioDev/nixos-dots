@@ -73,18 +73,13 @@
     # Extra commands that should be added to .zshrc
     initContent = ''
       unset -f d
+      source ${./prompt.zsh}
     '';
 
     historySubstringSearch = {
       enable = true; # Чтоб вверх/вниз учитывал уже написанную команду
-      searchUpKey = [
-        "^[[A"
-        "$terminfo[kcuu1]"
-      ];
-      searchDownKey = [
-        "^[[B"
-        "$terminfo[kcud1]"
-      ];
+      searchUpKey = [ "^[[A" "$terminfo[kcuu1]" ];
+      searchDownKey = [ "^[[B" "$terminfo[kcud1]" ];
     };
 
     oh-my-zsh = { # https://github.com/ohmyzsh/ohmyzsh
@@ -95,7 +90,6 @@
         "colored-man-pages" # Adds colors to man pages
         "extract" # Одна команда на все архивы: "x *.zip"
         "fzf" # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf
-        "safe-paste" # Preventing any code from running while pasting, so you have a chance to review what was pasted
         "ssh-agent" # Автостарт ssh-agent. Хз надо ли настраивать и если да, то как
         "timer" # Показывает время выполнения команды
         "universalarchive" # Run "ua <format> <files>": "ua zip ./"

@@ -22,9 +22,8 @@
 
     ./software/mpv/mpv.nix
     ./software/ranger/ranger.nix
-    ./software/starship.nix
     # ./software/mangohud.nix
-    ./software/zsh.nix
+    ./software/zsh/zsh.nix
     # ./software/pi.nix
     ./software/harmony.nix
 
