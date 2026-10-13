@@ -321,10 +321,7 @@
     ## Random ##
     ############
 
-    pkgs2.discord
-    pkgs2.vesktop
     pkgs2.telegram-desktop
-
 
     librewolf
     firefox
