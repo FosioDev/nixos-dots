@@ -1,15 +1,12 @@
 setopt PROMPT_SUBST
-export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 if [[ "$TERM" == "linux" ]]; then
     _ICO_PROMPT=">"
     _ICO_GIT=""
-    _ICO_PY="py:"
     _ICO_NIX="nix:"
 else
     _ICO_PROMPT="❯"
     _ICO_GIT=" "
-    _ICO_PY=" "
     _ICO_NIX=" "
 fi
 
@@ -25,11 +22,6 @@ _prompt_git() {
     branch=${branch//\%/%%}
 
     echo " on %B%F{magenta}${_ICO_GIT}${branch}%f%b"
-}
-
-_prompt_python() {
-    [[ -z "$VIRTUAL_ENV" ]] && return
-    echo " via %B%F{yellow}${_ICO_PY}(${VIRTUAL_ENV:t})%f%b"
 }
 
 _prompt_nix() {
@@ -49,6 +41,6 @@ _prompt_duration() {
 
 precmd() {
     PS1="
-%B%F{cyan}%1~%f%b$(_prompt_git)$(_prompt_python)$(_prompt_nix)$(_prompt_duration)
+%B%F{cyan}%1~%f%b$(_prompt_git)$(_prompt_nix)$(_prompt_duration)
 %(?.%B%F{green}.%B%F{red})${_ICO_PROMPT}%f%b "
 }
