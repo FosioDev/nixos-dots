@@ -25,7 +25,6 @@
     # ./software/mangohud.nix
     ./software/zsh/zsh.nix
     # ./software/pi.nix
-    ./software/harmony.nix
 
     ./themes/themes.nix
 
