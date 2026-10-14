@@ -113,19 +113,10 @@
     alacritty = {
       enable = true;
       settings.window.padding = { x = 5; y = 5; };
-      # shift enter переносы в pi
-      settings.keyboard.bindings = [{
-        chars = "\n";
-        key = "Return";
-        mods = "Shift";
-      }];
     };
     kitty = { # Кривой ssh, но быстрый протокол рендера видео
       enable = true;
-      shellIntegration = {
-        enableBashIntegration = true;
-        enableZshIntegration = true;
-      };
+      shellIntegration.enableZshIntegration = true;
       settings.window_padding_width = 5;
     };
   };

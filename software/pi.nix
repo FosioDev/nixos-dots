@@ -1,4 +1,11 @@
-{ pi, ... }: {
+{ pi, config, ... }: {
+  # shift enter переносы в pi
+  hm.programs.alacritty.settings.keyboard.bindings = [{
+    chars = "\n";
+    key = "Return";
+    mods = "Shift";
+  }];
+
   environment.systemPackages = with pi; let
     # Библиотеки рантайма
     runtimeLibs = lib.makeLibraryPath [
