@@ -59,7 +59,10 @@ in {
     })
   ];
 
-  programs.sway = {
+  hm.wayland.systemd.target = "sway-session.target";
+
+  # https://github.com/swaywm/sway/wiki
+  hm.wayland.windowManager.sway = {
     enable = true;
 
     extraSessionCommands = ''
@@ -68,13 +71,6 @@ in {
       export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
       export _JAVA_AWT_WM_NONREPARENTING=1
     '';
-  };
-
-  hm.wayland.systemd.target = "sway-session.target";
-
-  # https://github.com/swaywm/sway/wiki
-  hm.wayland.windowManager.sway = {
-    enable = true;
 
     systemd.enable = true;
 
