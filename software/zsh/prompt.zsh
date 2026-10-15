@@ -34,9 +34,17 @@ _prompt_duration() {
     unset _CMD_START
     (( elapsed < 2 )) && return
 
-    local m=""
-    (( elapsed >= 60 )) && m="$(( elapsed / 60 ))m"
-    echo " took %B%F{yellow}${m}$(( elapsed % 60 ))s%f%b"
+    local s=$(( elapsed % 60 ))
+    local m=$(( (elapsed / 60) % 60 ))
+    local h=$(( (elapsed / 3600) % 24 ))
+    local d=$(( elapsed / 86400 ))
+
+    local t="${s}s"
+    (( m > 0 || h > 0 || d > 0 )) && t="${m}m${t}"
+    (( h > 0 || d > 0 ))          && t="${h}h${t}"
+    (( d > 0 ))                   && t="${d}d${t}"
+
+    echo " took %B%F{yellow}${t}%f%b"
 }
 
 precmd() {
