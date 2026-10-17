@@ -73,25 +73,7 @@
 
     # Extra commands that should be added to .zshrc
     initContent = ''
-      # Модуль zsh для работы со временем. Нужен в некоторых скриптах
-      zmodload zsh/datetime
-
-      # Замена colored-man-pages из Oh-My-Zsh:
-      export LESS_TERMCAP_mb=$'\e[1;31m'      # Начало мигания (красный)
-      export LESS_TERMCAP_md=$'\e[1;36m'      # Заголовки и жирный текст (голубой/cyan)
-      export LESS_TERMCAP_me=$'\e[0m'         # Конец жирного/мигания
-      export LESS_TERMCAP_so=$'\e[01;44;33m'  # Выделение/поиск (желтый на синем фоне)
-      export LESS_TERMCAP_se=$'\e[0m'         # Конец выделения
-      export LESS_TERMCAP_us=$'\e[1;32m'      # Подчеркивание/аргументы команд (зеленый)
-      export LESS_TERMCAP_ue=$'\e[0m'         # Конец подчеркивания
-      export GROFF_NO_SGR=1                   # Заставляет groff использовать termcap вместо ломаных escape-кодов
-
-      # Переходить в папку просто написав её имя
-      setopt AUTO_CD
-
-      # Разрешить комментарии с '#' в интерактивном шелле
-      setopt INTERACTIVE_COMMENTS
-
+      source ${./settings.zsh}
       source ${./prompt.zsh}
       source ${./functions.zsh}
       source ${./keybindings.zsh}
