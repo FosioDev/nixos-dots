@@ -94,6 +94,7 @@
 
       source ${./prompt.zsh}
       source ${./functions.zsh}
+      source ${./keybindings.zsh}
     '';
 
     historySubstringSearch = {
