@@ -4,6 +4,17 @@ in {
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
+
+    # Явное распределение ролей между gtk и wlr
+    config = {
+      common.default = [ "gtk" ];
+      sway = {
+        default = [ "gtk" ];
+        "org.freedesktop.impl.portal.Screencast" = [ "wlr" ];
+        "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+      };
+    };
+
     wlr = {
       enable = true;
       settings = {
