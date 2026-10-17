@@ -75,6 +75,7 @@ in {
   # https://github.com/swaywm/sway/wiki
   hm.wayland.windowManager.sway = {
     enable = true;
+    wrapperFeatures.gtk = true;
 
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland
