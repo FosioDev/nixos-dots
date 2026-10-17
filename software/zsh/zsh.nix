@@ -2,7 +2,14 @@
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
-  # Сейчас почти всё можно без home-manager сделать
+  # Ctrl + R — Поиск по истории
+  # Ctrl + T — Быстрая вставка пути к файлу прямо в команду
+  # Alt + C — Интерактивный cd
+  hm.programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   hm.programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -20,35 +27,29 @@
       [ "$(tty)" = "/dev/tty1" ] && exec sway
     '';
 
-    # Плюс это https://github.com/ohmyzsh/ohmyzsh/wiki/Cheatsheet
     shellAliases = let
       flakeDir = "~/nixos-dots";
     in {
-      rbs = "sudo nixos-rebuild switch --impure --flake ${flakeDir}"; # Применить новый конфиг сразу
-      rbb = "sudo nixos-rebuild boot --impure --flake ${flakeDir}"; # Применить новый конфиг после ребута пк
-
-      # Я не помню что это значит, не использую
-      # upg = "sudo nixos-rebuild switch --impure --upgrade --flake ${flakeDir}";
-
-      # Обновить все flake inputs до последних версий
-      # Если после upd дописать название инпута из flake.nix, то обновится только указанный инпут
-      # Например `upd nixpkgs2` для обновления unstable репы
-      upd = "sudo nix flake update --flake ${flakeDir}";
-
-      # Garbage collector. Удалить все не используемые пакеты (например после обновы)
+      rbs = "sudo nixos-rebuild switch --impure --flake ${flakeDir}";
+      rbb = "sudo nixos-rebuild boot --impure --flake ${flakeDir}";
+      upd = "sudo nix flake update --flake ${flakeDir}"; # upd nixpkgs2
       grb = "sudo nix-collect-garbage -d";
 
       vim = "nvim";
       vi = "nvim";
       v = "nvim";
-      
       k = "kubectl";
       t = "timer";
       r = "ranger --choosedir=/tmp/choosedir && cd \"$(cat /tmp/choosedir)\"";
       g = "gitui";
       f = "fastfetch";
       b = "bat --color=always -p --pager='-r'"; # Веди себя как cat, но с цветами
-      # l = "ls -lah";
+
+      ls = "ls --color=auto";
+      l = "ls -lAh --color=auto";
+      ll = "ls -lh --color=auto";
+      md = "mkdir -p";
+      grep = "grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn,.idea,.tox,.venv,venv}";
 
       swaysleep = "swayidle -w timeout 5 'swaymsg \"output * dpms off\"' resume 'swaymsg \"output * dpms on\"; kill $PPID'";
 
@@ -72,28 +73,33 @@
 
     # Extra commands that should be added to .zshrc
     initContent = ''
-      unset -f d
+      # Модуль zsh для работы со временем. Нужен в некоторых скриптах
+      zmodload zsh/datetime
+
+      # Замена colored-man-pages из Oh-My-Zsh:
+      export LESS_TERMCAP_mb=$'\e[1;31m'      # Начало мигания (красный)
+      export LESS_TERMCAP_md=$'\e[1;36m'      # Заголовки и жирный текст (голубой/cyan)
+      export LESS_TERMCAP_me=$'\e[0m'         # Конец жирного/мигания
+      export LESS_TERMCAP_so=$'\e[01;44;33m'  # Выделение/поиск (желтый на синем фоне)
+      export LESS_TERMCAP_se=$'\e[0m'         # Конец выделения
+      export LESS_TERMCAP_us=$'\e[1;32m'      # Подчеркивание/аргументы команд (зеленый)
+      export LESS_TERMCAP_ue=$'\e[0m'         # Конец подчеркивания
+      export GROFF_NO_SGR=1                   # Заставляет groff использовать termcap вместо ломаных escape-кодов
+
+      # Переходить в папку просто написав её имя
+      setopt AUTO_CD
+
+      # Разрешить комментарии с '#' в интерактивном шелле
+      setopt INTERACTIVE_COMMENTS
+
       source ${./prompt.zsh}
+      source ${./functions.zsh}
     '';
 
     historySubstringSearch = {
       enable = true; # Чтоб вверх/вниз учитывал уже написанную команду
       searchUpKey = [ "^[[A" "$terminfo[kcuu1]" ];
       searchDownKey = [ "^[[B" "$terminfo[kcud1]" ];
-    };
-
-    oh-my-zsh = { # https://github.com/ohmyzsh/ohmyzsh
-      enable = true;
-      plugins = [ # Комментирую то, в надобности чего не уверен, но показалось интересным. Можно удалить
-        "aliases" # "als" в терминале покажет все алиасы. Можно добавить слово для фильтрации
-        "bgnotify" # Оповещения для долгих команд. Make sure you have "notify-send" or "kdialog" installed
-        "colored-man-pages" # Adds colors to man pages
-        "extract" # Одна команда на все архивы: "x *.zip"
-        "fzf" # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/fzf
-        "ssh-agent" # Автостарт ssh-agent. Хз надо ли настраивать и если да, то как
-        "timer" # Показывает время выполнения команды
-        "universalarchive" # Run "ua <format> <files>": "ua zip ./"
-      ];
     };
   };
 }

@@ -10,10 +10,6 @@ else
     _ICO_NIX=" "
 fi
 
-preexec() {
-    _CMD_START=$EPOCHSECONDS
-}
-
 _prompt_git() {
     local branch
     branch=$(command git symbolic-ref --short HEAD 2>/dev/null) || \
@@ -47,8 +43,16 @@ _prompt_duration() {
     echo " took %B%F{yellow}${t}%f%b"
 }
 
-precmd() {
+_prompt_preexec() {
+    _CMD_START=$EPOCHSECONDS
+}
+
+_prompt_precmd() {
     PS1="
 %B%F{cyan}%1~%f%b$(_prompt_git)$(_prompt_nix)$(_prompt_duration)
 %(?.%B%F{green}.%B%F{red})${_ICO_PROMPT}%f%b "
 }
+
+autoload -Uz add-zsh-hook
+add-zsh-hook preexec _prompt_preexec
+add-zsh-hook precmd _prompt_precmd
