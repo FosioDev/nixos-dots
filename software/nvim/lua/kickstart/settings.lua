@@ -66,6 +66,10 @@ vim.o.showmode = false
 -- greatest remap ever
 vim.keymap.set('x', '<leader>p', '"_dP', { desc = '[P]aste without yank' })
 
+-- Удаление слова назад по Ctrl + Backspace в Insert mode
+vim.keymap.set('i', '<C-BS>', '<C-w>')
+vim.keymap.set('i', '<C-h>', '<C-w>')
+
 -- Не вырезать табы при пасте в терминальные окна (по умолчанию HT в фильтре)
 vim.o.termpastefilter = 'BS,ESC,DEL'
 
