@@ -20,7 +20,16 @@
   programs = {
     # Добавить это github.com/kartavkun/zapret-discord-youtube
     throne = {
-      package = throne.throne;
+      # Оборачиваем пакет, добавляя флаг запуска
+      package = (pkgs.symlinkJoin {
+        name = "throne-wayland";
+        paths = [ throne.throne ];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/Throne \
+            --add-flags "-platform wayland"
+        '';
+      }) // { inherit (throne.throne) passthru; }; # Пробрасываем passthru.core для tunMode
       enable = true;
       tunMode = {
         enable = true;
