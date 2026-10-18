@@ -207,6 +207,11 @@ __notify_precmd() {
     (( h > 0 || d > 0 ))          && t="${h}h ${t}"
     (( d > 0 ))                   && t="${d}d ${t}"
 
+    # Зажигаем красный индикатор воркспейса (Urgency)
+    printf '\a' # Терминальный звонок (BEL)
+    [[ -n "$start_id" ]] && swaymsg "[con_id=$start_id] urgent enable" &>/dev/null || true
+
+    # Отправляем всплывающее уведомление
     if [[ $exit_code -eq 0 ]]; then
         notify-send -u normal "win ($t)" "$cmd_name"
     else
