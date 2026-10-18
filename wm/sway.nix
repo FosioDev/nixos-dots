@@ -70,12 +70,14 @@ in {
     })
   ];
 
-  hm.wayland.systemd.target = "sway-session.target";
-
-  # https://github.com/swaywm/sway/wiki
-  hm.wayland.windowManager.sway = {
+  programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
+
+    extraPackages = with pkgs; [
+      swayidle
+      swaylock
+    ];
 
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland
@@ -83,6 +85,28 @@ in {
       export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
       export _JAVA_AWT_WM_NONREPARENTING=1
     '';
+  };
+
+  # Ребилд перезапустит sway
+  # Новый шаг активации 'reloadSway' после этапа `writeBoundary`
+  # writeBoundary - это момент, когда все файлы конфигурации уже записаны
+  # То есть конфиги Sway уже обновлены и можно делать reload
+  hm.home.activation.reloadSway = config.hm.lib.dag.entryAfter [ "writeBoundary" ] ''
+    SWAYSOCK=$(ls /run/user/*/sway-ipc.*.sock 2>/dev/null | head -n1)
+    if [ -n "$SWAYSOCK" ] && [ -S "$SWAYSOCK" ]; then
+      ${pkgs.sway}/bin/swaymsg -s "$SWAYSOCK" reload || true
+    fi
+  '';
+
+  hm.wayland.systemd.target = "sway-session.target";
+
+  # https://github.com/swaywm/sway/wiki
+  hm.wayland.windowManager.sway = {
+    enable = true;
+
+    # Использовать бинарь из programs.sway, чтоб избавиться от некоторых багов/проблем
+    # Но взамен теряем auto reload после ребилда. Фикс выше
+    package = null;
 
     systemd.enable = true;
 

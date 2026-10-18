@@ -1,7 +1,7 @@
 # `lib.file.mkOutOfStoreSymlink` делает симлинк не read only через nix store
 # В теории должно быть нормальным для часто изменяющихся файлов
 
-{ config, lib, ... }: let
+{ config, ... }: let
   dir = "backups";
 in {
   hm.home.file = { # В .config этим нельзя кидать
