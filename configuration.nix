@@ -8,6 +8,7 @@
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = [ "root" "@wheel" ]; # for binary cache
 
   time.timeZone = "Europe/Moscow";
 

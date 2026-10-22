@@ -287,7 +287,6 @@
 
     # lutris # Не всё через `wine game.exe` работает на nixos нормально
     # heroic
-    prismlauncher
 
     pkgs2.protonup-qt
     # steam-run # Запуск бинарей в окружении, похожем на steam runtime
