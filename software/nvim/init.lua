@@ -86,7 +86,7 @@ require('lazy').setup({
     -------------------------------------
 
     -- Supercharge your Rust experience in Neovim
-    require 'custom.plugins.rust',
+    -- require 'custom.plugins.rust',
 
     -- Feature-Rich Go Plugin for Neovim
     require 'custom.plugins.golang',

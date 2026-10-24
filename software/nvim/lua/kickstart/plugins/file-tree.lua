@@ -6,14 +6,19 @@ return {
             'nvim-lua/plenary.nvim',
             'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
             'MunifTanjim/nui.nvim',
-            { -- Optional image support in preview window: See `# Preview Mode` for more information
-                '3rd/image.nvim',
-                build = false, -- so that it doesn't build the rock
-                opts = {
-                    backend = 'ueberzug', -- or "kitty"
-                    processor = 'magick_cli', -- or "magick_rock"
-                },
-            },
+            -- { -- Optional image support in preview window: See `# Preview Mode` for more information
+            --     '3rd/image.nvim',
+            --     build = false, -- so that it doesn't build the rock
+            --     opts = {
+            --         backend = 'ueberzug', -- or "kitty"
+            --         processor = 'magick_cli', -- or "magick_rock"
+            --         integrations = {
+            --             markdown = {
+            --                 enabled = false,
+            --             },
+            --         },
+            --     },
+            -- },
         },
         lazy = false, -- neo-tree will lazily load itself
         keys = {
