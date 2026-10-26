@@ -18,6 +18,7 @@
     inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-stable
     inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
     inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher
+    inputs.swayimg.packages.${pkgs.stdenv.hostPlatform.system}.default
     # pkgs.affinity-v3 # Бесплатная замена photoshop через wine
   ];
 }

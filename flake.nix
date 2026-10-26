@@ -51,6 +51,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    swayimg = {
+      url = "github:fosiodev/swayimg";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     freesmlauncher = {
       url = "github:FreesmTeam/FreesmLauncher";
       inputs.nixpkgs.follows = "nixpkgs";
