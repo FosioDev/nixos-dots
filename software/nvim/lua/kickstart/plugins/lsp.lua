@@ -295,7 +295,7 @@ return {
             -- }
 
             -- Rust
-            lspconfig.rust_analyzer.setup {}
+            -- lspconfig.rust_analyzer.setup {}
 
             -- Bash
             lspconfig.bashls.setup {

@@ -185,19 +185,19 @@
     gnumake
     yaml-language-server
     taplo
-    rust-analyzer
+    # rust-analyzer
 
     python3
     # python3Packages.pip
 
-    go
-    gopls
-    delve
-    golangci-lint
+    pkgs2.go_latest
+    pkgs2.gopls
+    pkgs2.delve
+    pkgs2.golangci-lint
 
-    protobuf
-    protoc-gen-go
-    protoc-gen-go-grpc
+    pkgs2.protobuf
+    pkgs2.protoc-gen-go
+    pkgs2.protoc-gen-go-grpc
 
     lua5_1
     luajit
@@ -219,15 +219,15 @@
     svelte-language-server
     tailwindcss_4
 
-    godot
-    # gdtoolkit_4
-    # ldtk
+    pkgs2.godot
+    # pkgs2.gdtoolkit_4
+    # pkgs2.ldtk
 
-    # k3d
-    # k3s
-    # k9s
-    # kubectl
-    # kubernetes-helm
+    # pkgs2.k3d
+    # pkgs2.k3s
+    # pkgs2.k9s
+    # pkgs2.kubectl
+    # pkgs2.kubernetes-helm
 
 
     ##############
