@@ -3,11 +3,11 @@
 let
   sable = pkgs.stdenv.mkDerivation rec {
     pname = "sable";
-    version = "2.2.0";
+    version = "2.3.0";
 
     src = pkgs.fetchurl {
       url = "https://git.sable.moe/SableClient/sable-next/releases/download/v${version}/sable-${version}-x64.tar.gz";
-      hash = "sha256-h0zdmFd/Xsqld5mb+WBshC67rNdFWUw1dAQcjy9i9OE=";
+      hash = "sha256-ynlbq2hloat6u6F/VCsFqEEic908PEVONuEDwzYBEgg=";
     };
 
     nativeBuildInputs = with pkgs; [
