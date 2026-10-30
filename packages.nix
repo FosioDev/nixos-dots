@@ -123,6 +123,16 @@
       shellIntegration.enableZshIntegration = true;
       settings.window_padding_width = 5;
     };
+    zellij = { # Если раньше запускал zellij, то удали сток config.kdl
+      enable = true;
+      settings.keybinds = {
+        # shared_except.locked = { # Выключает бинды в locked mode
+        shared = { # Бинды работают всегда, даже в locked mode
+          "bind \"Ctrl Tab\"" = { GoToNextTab = {}; };
+          "bind \"Ctrl Shift Tab\"" = { GoToPreviousTab = {}; };
+        };
+      };
+    };
   };
   services.tumbler.enable = true; # XFCE Thumbnails
   programs = {
@@ -146,6 +156,7 @@
     alacritty ueberzugpp
     kitty
     catfish xfce4-exo # thunar
+    zellij
 
     #############
     ## Wayland ##
@@ -242,7 +253,7 @@
     gnugrep rsync fastfetch bat
     fzf killall libxml2 brightnessctl
     miller svt-av1 gawk tokei
-    gitui fclones zellij timer
+    gitui fclones timer
     inetutils playerctl libnotify
     btop-rocm btop-cuda
     pkgs2.yt-dlp
