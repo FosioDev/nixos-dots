@@ -64,7 +64,7 @@ return {
                 ['<Tab>'] = { 'select_and_accept', 'fallback' },
 
                 -- Select next/previous item
-                ['<C-Tab>'] = { 'select_next', 'fallback' },
+                ['<A-Tab>'] = { 'select_next', 'fallback' },
                 ['<S-Tab>'] = { 'select_prev', 'fallback' },
 
                 -- Scroll the documentation window [b]ack / [f]orward

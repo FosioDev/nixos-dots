@@ -126,7 +126,8 @@
     zellij = { # Если раньше запускал zellij, то удали сток config.kdl
       enable = true;
       settings.keybinds = {
-        # shared_except.locked = { # Выключает бинды в locked mode
+        # shared_except = { # Выключает бинды в locked mode
+        #   _args = [ "locked" ];
         shared = { # Бинды работают всегда, даже в locked mode
           "bind \"Ctrl Tab\"" = { GoToNextTab = {}; };
           "bind \"Ctrl Shift Tab\"" = { GoToPreviousTab = {}; };
