@@ -14,6 +14,7 @@
 
 { pkgs, inputs, ... }: {
   # nixpkgs.overlays = [ inputs.affinity-nix.overlays.default ];
+  services.mchose.enable = true;
   environment.systemPackages = [
     inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-stable
     inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin

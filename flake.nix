@@ -61,6 +61,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mchose = {
+      url = "github:fosiodev/mchose-linux";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     affinity-nix.url = "github:mrshmllow/affinity-nix";
     nix-gaming.url = "github:fufexan/nix-gaming";
   };
@@ -96,6 +101,7 @@
           home-manager.extraSpecialArgs = commonArgs;
         }
         inputs.stylix.nixosModules.stylix
+        inputs.mchose.nixosModules.default
       ];
     };
   };

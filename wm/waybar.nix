@@ -1,4 +1,63 @@
-{ pkgs, config, inputs, ... }: {
+{ pkgs, config, inputs, ... }: 
+
+let
+  mchose-waybar = pkgs.writeScript "mchose-waybar" ''
+    #!/usr/bin/env zsh
+
+    setopt errexit nounset pipefail extended_glob
+
+    typeset -A data
+
+    if ! info_out=$(mchose info 2>&1); then
+      if [[ $info_out == *'empty identity'* ]]; then
+        # Донгл вставлен, но мышь спит или выключена
+        print -r -- '{"text": "󰍽 zzz", "tooltip": "Mouse sleeping / offline", "class": "disconnected"}'
+      else
+        # Донгла/мыши нет — полностью скрываем модуль
+        print -r -- '{"text": "", "class": "disconnected"}'
+      fi
+      exit 0
+    fi
+
+    for line in ''${(f)info_out}; do
+      if [[ $line == (#b)(link|battery)[[:space:]]##(*) ]]; then
+        data[$match[1]]=''${match[2]%%[[:space:]]##}
+      fi
+    done
+
+    show_out=$(mchose show 2>/dev/null) || show_out=""
+
+    for line in ''${(f)show_out}; do
+      if [[ $line == (#b)[[:space:]]#\*[[:space:]]##[0-9]##[[:space:]]##(*) ]]; then
+        data[dpi]=''${match[1]%%[[:space:]]##}
+      elif [[ $line == (#b)(rate|debounce|sleep|lod)[[:space:]]##(*) ]]; then
+        data[$match[1]]=''${match[2]%%[[:space:]]##}
+      fi
+    done
+
+    # "77 %" -> 77
+    bat_raw=''${''${data[battery]:-}//[^0-9]/}
+    integer bat=''${bat_raw:-0}
+
+    # "1 mm (write-only, from this tool's state)" -> "1 mm"
+    lod=''${''${data[lod]:-?}%% \(*}
+
+    charge_icon=""
+    if [[ ''${data[battery]:-} == *charging* ]]; then
+      charge_icon=" "
+      cls="charging"
+    else
+      cls="connected"
+      (( bat <= 30 )) && cls="warning"
+      (( bat <= 15 )) && cls="critical"
+    fi
+
+    tooltip="DPI: ''${data[dpi]:-?}\nRate: ''${data[rate]:-?}\nDebounce: ''${data[debounce]:-?}\nSleep: ''${data[sleep]:-?}\nLOD: $lod\nLink: ''${data[link]}"
+
+    printf '{"text": "󰍽 %d%%%s", "tooltip": "%s", "class": "%s"}\n' \
+      "$bat" "$charge_icon" "$tooltip" "$cls"
+  '';
+in {
 
   hm.programs.waybar = {
     enable = true;
@@ -16,7 +75,8 @@
         modules-left = [ "sway/workspaces" "custom/separator" "sway/window" ];
         modules-center = [ "clock" ];
         modules-right = [
-          "sway/scratchpad" "custom/separator"
+          "sway/scratchpad" #"custom/separator"
+          "custom/mchose" "custom/separator"
           "cpu" "custom/separator" "memory" "custom/separator"
           "tray" "custom/separator" "sway/language" "custom/separator"
           "custom/rofi" "custom/separator" "custom/power"
@@ -26,6 +86,13 @@
           format = "|";
           interval = "once";
           tooltip = false;
+        };
+
+        "custom/mchose" = {
+          exec = "${mchose-waybar}";
+          return-type = "json";
+          interval = 30;
+          on-click = "mchose-gui";
         };
 
         "custom/rofi" = {
@@ -141,6 +208,22 @@
 
       #custom-separator {
           color: ${config.my.colors.base09};
+      }
+
+      #custom-mchose.connected {
+        color: ${config.my.colors.base05};
+      }
+      #custom-mchose.warning {
+        color: ${config.my.colors.base0A};
+      }
+      #custom-mchose.critical {
+        color: ${config.my.colors.base08};
+      }
+      #custom-mchose.disconnected {
+        color: ${config.my.colors.base03};
+      }
+      #custom-mchose.charging {
+        color: ${config.my.colors.base0B};
       }
 
       #custom-rofi {
