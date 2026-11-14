@@ -1,4 +1,5 @@
 setopt PROMPT_SUBST
+PROMPT_EOL_MARK="" # Убрать инвертированный символ % в конце вывода команды
 
 if [[ "$TERM" == "linux" ]]; then
     _ICO_PROMPT=">"
