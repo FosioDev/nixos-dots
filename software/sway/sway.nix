@@ -126,7 +126,7 @@ in {
 
       # swaymsg -t get_outputs
       output = {
-        "*".bg = "${../themes/media/1.png} fill";
+        "*".bg = "${../../themes/media/1.png} fill";
         DP-3 = {
           scale = scale;
           mode = "3840x2160@160Hz";
@@ -256,118 +256,8 @@ in {
 
       keybindings = let
         mod = config.hm.wayland.windowManager.sway.config.modifier;
-
-        controls = pkgs.writeScript "controls" ''
-          #!/usr/bin/env zsh
-
-          set -euo pipefail
-
-          control="$1"
-          value="$2"
-
-          get_audio_info() {
-            local dev="@DEFAULT_AUDIO_SINK@"
-            [[ $1 == 'mic' ]] && dev="@DEFAULT_AUDIO_SOURCE@"
-
-            local raw=$(wpctl get-volume $dev)
-            local parts=($=raw)
-
-            integer -g vol=$(( parts[2] * 100 ))
-            is_muted=1
-            [[ $raw == *'[MUTED]'* ]] && is_muted=2
-
-            return 0
-          }
-
-          # notify <tag> <title> [progress] [body]
-          notify() {
-            notify-send -t 2000 -h "string:x-canonical-private-synchronous:$1" \
-                        ''${3:+-h} ''${3:+int:value:$3} \
-                        "$2" ''${4:+"$4"}
-          }
-
-          case $control in
-            volume)
-              wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ "$value"
-              get_audio_info sink
-              notify volume "  Volume $vol%" $vol
-              ;;
-
-            brightness)
-              brightnessctl set "$value"
-              val=''${''${(s:,:)$(brightnessctl -m)}[4]%\%}
-              notify brightness "  Brightness $val%" $val
-              ;;
-
-            mute)
-              dev="@DEFAULT_AUDIO_SINK@"
-              icons=('  Unmuted' '  Muted')
-
-              if [[ $value == 'mic' ]]; then
-                dev="@DEFAULT_AUDIO_SOURCE@"
-                icons=('  Mic Unmuted' '  Mic Muted')
-              fi
-
-              wpctl set-mute $dev toggle
-              get_audio_info $value
-
-              notify $value "''${icons[is_muted]} ($vol%)" $vol
-              ;;
-
-            media)
-              playerctl "$value" 2>/dev/null || {
-                notify media "  No player active"
-                exit 0
-              }
-              sleep 0.05
-
-              case $value in
-                play-pause) [[ $(playerctl status 2>/dev/null) == 'Playing' ]] && title='  Playing' || title='  Paused' ;;
-                next)       title='  Next Track' ;;
-                previous)   title='  Previous Track' ;;
-                stop)       title='  Stopped' ;;
-              esac
-
-              body=$(playerctl metadata --format $'{{title}}\n{{artist}}' 2>/dev/null || true)
-              notify media "$title" "" "$body"
-              ;;
-          esac
-        '';
-
-        # '' для экранирования $ в многострочной строке
-        screenshot = pkgs.writeShellScript "screenshot" ''
-          DIR="$HOME/Pictures/Screenshots"
-          TIMESTAMP=$(date '+%Y%m%d-%H%M%S')
-          SATTY_CMD=(
-            satty -f - --initial-tool=arrow --copy-command="wl-copy"
-            --actions-on-enter="save-to-clipboard,save-to-file,exit"
-            --actions-on-escape="save-to-clipboard,save-to-file,exit"
-            --brush-smooth-history-size=5 --disable-notifications
-            --output-filename "$DIR/satty-$TIMESTAMP.png"
-          )
-
-          case "$1" in
-            area)
-              FILE="$DIR/screenshot-$TIMESTAMP.png"
-              # Экран заморозится, slurp берет геометрию. Если нажат Esc — GEOM пустой,
-              # grim не вызывается, а killall в любом случае отпускает экран.
-              wayfreeze --hide-cursor --after-freeze-cmd '
-                GEOM=$(slurp)
-                [ -n "$GEOM" ] && grim -g "$GEOM" -t png - | tee "'"$FILE"'" | wl-copy
-                killall wayfreeze
-              '
-              ;;
-
-            fullscreen)
-              grim -t ppm - | "''${SATTY_CMD[@]}"
-              ;;
-
-            window)
-              GEOM=$(swaymsg -t get_tree | jq -r '.. | select(.focused?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')
-              [ -n "$GEOM" ] && grim -t ppm -g "$GEOM" - | "''${SATTY_CMD[@]}"
-              ;;
-          esac
-        '';
+        controls = pkgs.writeScript "controls" (builtins.readFile ./sway-controls.zsh);
+        screenshot = pkgs.writeShellScript "screenshot" (builtins.readFile ./sway-screenshot.sh);
       in {
         # Volume
         "--locked XF86AudioRaiseVolume" = "exec ${controls} volume 5%+";

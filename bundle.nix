@@ -15,23 +15,22 @@
     # ./hardware/filesystems.nix
     # ./hardware/hibernate.nix
     ./hardware/virtualisation.nix
-    # ./hardware/qemu-guest.nix
     ./hardware/network.nix
     ./hardware/sound.nix
+    # ./hardware/qemu-guest.nix
     # ./hardware/vr.nix
 
     ./software/mpv/mpv.nix
     ./software/ranger/ranger.nix
-    # ./software/mangohud.nix
+    ./software/rofi/rofi.nix
+    ./software/sway/sway.nix
+    ./software/waybar/waybar.nix
     ./software/zsh/zsh.nix
-    # ./software/pi.nix
+    ./software/dunst.nix
     ./software/sable.nix
+    # ./software/mangohud.nix
+    # ./software/pi.nix
 
     ./themes/themes.nix
-
-    ./wm/rofi/rofi.nix
-    ./wm/dunst.nix
-    ./wm/sway.nix
-    ./wm/waybar.nix
   ];
 }

@@ -1,63 +1,4 @@
-{ pkgs, config, inputs, ... }: 
-
-let
-  mchose-waybar = pkgs.writeScript "mchose-waybar" ''
-    #!/usr/bin/env zsh
-
-    setopt errexit nounset pipefail extended_glob
-
-    typeset -A data
-
-    if ! info_out=$(mchose info 2>&1); then
-      if [[ $info_out == *'empty identity'* ]]; then
-        # Донгл вставлен, но мышь спит или выключена
-        print -r -- '{"text": "󰍽 zzz", "tooltip": "Mouse sleeping / offline", "class": "disconnected"}'
-      else
-        # Донгла/мыши нет — полностью скрываем модуль
-        print -r -- '{"text": "", "class": "disconnected"}'
-      fi
-      exit 0
-    fi
-
-    for line in ''${(f)info_out}; do
-      if [[ $line == (#b)(link|battery)[[:space:]]##(*) ]]; then
-        data[$match[1]]=''${match[2]%%[[:space:]]##}
-      fi
-    done
-
-    show_out=$(mchose show 2>/dev/null) || show_out=""
-
-    for line in ''${(f)show_out}; do
-      if [[ $line == (#b)[[:space:]]#\*[[:space:]]##[0-9]##[[:space:]]##(*) ]]; then
-        data[dpi]=''${match[1]%%[[:space:]]##}
-      elif [[ $line == (#b)(rate|debounce|sleep|lod)[[:space:]]##(*) ]]; then
-        data[$match[1]]=''${match[2]%%[[:space:]]##}
-      fi
-    done
-
-    # "77 %" -> 77
-    bat_raw=''${''${data[battery]:-}//[^0-9]/}
-    integer bat=''${bat_raw:-0}
-
-    # "1 mm (write-only, from this tool's state)" -> "1 mm"
-    lod=''${''${data[lod]:-?}%% \(*}
-
-    charge_icon=""
-    if [[ ''${data[battery]:-} == *charging* ]]; then
-      charge_icon=" "
-      cls="charging"
-    else
-      cls="connected"
-      (( bat <= 30 )) && cls="warning"
-      (( bat <= 15 )) && cls="critical"
-    fi
-
-    tooltip="DPI: ''${data[dpi]:-?}\nRate: ''${data[rate]:-?}\nDebounce: ''${data[debounce]:-?}\nSleep: ''${data[sleep]:-?}\nLOD: $lod\nLink: ''${data[link]}"
-
-    printf '{"text": "󰍽 %d%%%s", "tooltip": "%s", "class": "%s"}\n' \
-      "$bat" "$charge_icon" "$tooltip" "$cls"
-  '';
-in {
+{ pkgs, config, inputs, ... }: {
 
   hm.programs.waybar = {
     enable = true;
@@ -89,7 +30,11 @@ in {
         };
 
         "custom/mchose" = {
-          exec = "${mchose-waybar}";
+          # С информацией при наведении
+          # exec = "${pkgs.writeScript "mchose-waybar" (builtins.readFile ./mchose-waybar.zsh)}";
+
+          # Только заряд, без доп инфы при наведении
+          exec = "${pkgs.writeScript "mchose-waybar" (builtins.readFile ./mchose-waybar-min.zsh)}";
           return-type = "json";
           interval = 30;
           on-click = "mchose-gui";
@@ -159,13 +104,13 @@ in {
 
         cpu = {
           interval = 1;
-          format = "CPU {usage}%";
+          format = " {usage}%";
           tooltip = false;
         };
 
         memory = {
           interval = 5;
-          format = "RAM {used:0.1f}G + {swapUsed:0.1f}G";
+          format = " {used:0.1f}G + {swapUsed:0.1f}G";
           tooltip = false;
         };
       };
@@ -218,9 +163,6 @@ in {
       }
       #custom-mchose.critical {
         color: ${config.my.colors.base08};
-      }
-      #custom-mchose.disconnected {
-        color: ${config.my.colors.base03};
       }
       #custom-mchose.charging {
         color: ${config.my.colors.base0B};

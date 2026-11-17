@@ -200,6 +200,8 @@
     # rust-analyzer
 
     python3
+    # uv
+    # basedpyright
     # python3Packages.pip
 
     pkgs2.go_latest
@@ -217,8 +219,8 @@
     lua-language-server
 
     bash-language-server
-    shellcheck
-    shfmt
+    # shellcheck
+    # shfmt
 
     sqlite
     dbeaver-bin
